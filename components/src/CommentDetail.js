@@ -1,18 +1,22 @@
 import React from 'react';
 
-const commentDetail = () => {
+
+const commentDetail = (props) => {
+    return(
     <div className="comment">
     <a href="/" className="avatar">
-      <img alt="avatar" src={faker.image.avatar()}/>
+      <img alt="avatar" src={props.avatar}/>
     </a>
     <div className="content">
       <a href="/">
-        Sam
+      {props.author}
       </a>
       <div className="metadata">
-        <span className="date">Today at 6:00PM</span>
+        <span className="date">{props.timeAgo}</span>
       </div>
-      <div className="text">Nice Blog post!</div>
+      <div className="text">{props.commentText}</div>
     </div>
   </div>
+    );
 }
+export default commentDetail;
