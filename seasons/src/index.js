@@ -1,5 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import SeasonDisplay from "./SeasonDisplay"
+import Spinner from './Spinner'
+import "semantic-ui-css/semantic.min.css";
 
 if (module.hot) {
   module.hot.accept();
@@ -25,14 +28,20 @@ class App extends React.Component {
     console.log(`Component was updated and rerendered`)
   }
 
-  render(){
+  renderContent(){
     if(this.state.errorMessage && !this.state.lat){
       return <div> Error: {this.state.errorMessage}</div>
     }else if(!this.state.errorMessage && this.state.lat){
-      return <div> Latitude: {this.state.lat}</div>;
+      return <SeasonDisplay lat={this.state.lat}/>;
     } else {
-      return <div> Loading</div>;
+      return <Spinner message="Please accept locaton request"/>;
     }
+  }
+
+  render(){
+    return(
+      <div className="border red">{this.renderContent()}</div>
+    )
   }
 }
 ReactDOM.render(<App />, document.querySelector("#root"));
