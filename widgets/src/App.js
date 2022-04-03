@@ -1,6 +1,7 @@
 import React from 'react';
 //import Accordion from './components/Accordion';
-import Search from './components/Search';
+//import Search from './components/Search';
+import Dropdown from './components/Dropdown'
 
 const items = [
   {
@@ -17,10 +18,25 @@ const items = [
   },
 ];
 
+const options = [
+  {
+    label: 'The Colour Red',
+    value: 'red'
+  },
+  {
+    label: 'The Colour Green',
+    value: 'green'
+  },
+  {
+    label: 'The Colour Blue',
+    value: 'blue'
+  }
+]
+
 const App = () => {
   return <div>
     
-    <Search />
+    <Dropdown options={options}/>
   
   </div>
 }

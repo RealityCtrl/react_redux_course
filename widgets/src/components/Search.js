@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-
-
-
 const Search = () => {
     const regex = /(<([^>]+)>)|(&quot;)/gi //NEW
     const [searchTerm, setSearchTerm] = useState('');
+    const [debouncedTerm, setDebouncedTerm] = useState('');
     const [results, setResults] = useState([]);
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            setDebouncedTerm(searchTerm)
+        }, 500 );
+
+        return ()=> {
+            clearTimeout(timeoutId);
+        }
+    }, [searchTerm]);
 
     useEffect(() => {
         const search = async () => {
@@ -17,26 +25,13 @@ const Search = () => {
                     list: 'search',
                     origin: '*',
                     format: 'json',
-                    srsearch: {searchTerm}
+                    srsearch: debouncedTerm
                 }
             });
             setResults(data.query.search);
         }
-        if(searchTerm && results.length === 0){
-            search();
-        } else {
-            const timeoutId =  setTimeout(() => {
-                if(searchTerm){
-                    search();
-                }
-            },500 );
-    
-            return ()=> {
-                clearTimeout(timeoutId);
-            }
-        }
-
-    }, [searchTerm]);
+        search();
+    }, [debouncedTerm]);
 
     const renderedResults = results.map((result) => {
         
