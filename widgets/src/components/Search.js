@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 
-const regex = /(<([^>]+)>)|(&quot;)/gi //NEW
+
 
 const Search = () => {
-
+    const regex = /(<([^>]+)>)|(&quot;)/gi //NEW
     const [searchTerm, setSearchTerm] = useState('');
     const [results, setResults] = useState([]);
 
@@ -20,13 +20,21 @@ const Search = () => {
                     srsearch: {searchTerm}
                 }
             });
-            setResults(data.query.search)
+            setResults(data.query.search);
         }
-        if(searchTerm){
+        if(searchTerm && results.length === 0){
             search();
+        } else {
+            const timeoutId =  setTimeout(() => {
+                if(searchTerm){
+                    search();
+                }
+            },500 );
+    
+            return ()=> {
+                clearTimeout(timeoutId);
+            }
         }
-        
-        console.log('Used effect2')
 
     }, [searchTerm]);
 
@@ -38,6 +46,9 @@ const Search = () => {
         return (
             <div key={result.pageid} className='item'>
                 <div className='content'>
+                    <div className='right floated content'>
+                        <a className='ui button' href={`https://en.wikipedia.org?curid=${result.pageid}`}>Go</a>
+                    </div>
                     <div className='header'>
                         {result.title}
                     </div>
